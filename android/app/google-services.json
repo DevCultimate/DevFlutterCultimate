@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "70473540317",
+    "project_id": "cultimatedb",
+    "storage_bucket": "cultimatedb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70473540317:android:e661f0ba66945dc1697134",
+        "android_client_info": {
+          "package_name": "com.example.cultimate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeKIdUnJ0j6SEs_K5wut31qEQo5t1xdyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
