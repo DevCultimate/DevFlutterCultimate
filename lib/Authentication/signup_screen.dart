@@ -327,7 +327,9 @@ class _SignUpState extends State<SignUp> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>OtpScreen(verificationid: "50")));
+                        if(formKey.currentState!.validate())
+                        {
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>OtpScreen(verificationid: "50")));}
                       },
                       child: const Text(
                         'Sign Up',
