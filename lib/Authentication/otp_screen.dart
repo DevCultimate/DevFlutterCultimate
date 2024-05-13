@@ -1,8 +1,30 @@
+import 'package:cultimate/Screens/homepage.dart';
+import 'package:cultimate/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
 
 class OtpScreen extends StatefulWidget {
-  final verificationid;
-   const OtpScreen({Key? key, required this.verificationid}) : super(key: key);
+  final String verificationId; // Add this line
+  final String username_;
+  final String password_;
+  final String age_;
+  final String mobilnumber_;
+  final String pincode_;
+  final String familymember_;
+  final String area_;
+  final String role_;
+  const OtpScreen({Key? key, required this.verificationId,
+  required this.username_,
+    required this.password_,
+    required this.age_,
+    required this.mobilnumber_,
+    required this.pincode_,
+    required this.familymember_,
+    required this.area_,
+    required this.role_,}) : super(key: key);
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -120,13 +142,41 @@ Widget buildOtpFields() {
         for (int i = 0; i < 6; i++) {
           otp += _controllers[i].text; 
         }
-        // try{
-        //   PhoneAuthCredential credential=
-        //   await PhoneAuthProvider.credential(
-        //     verificationId: widget.verificationid, smsCode: otp);
-        // }catch(ex){
-
-        // }
+        try {
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: widget.verificationId,
+          smsCode: otp,
+        );
+        // Sign in with the credential
+        // await FirebaseAuth.instance.signInWithCredential(credential);
+        // Navigate to the home page after successful authentication
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
+      prefs.setString('mnumber', "+91${widget.mobilnumber_}");
+        FirestoreService().createUser(username: widget.username_,
+         password: widget.password_,
+         age: widget.age_, 
+         mobileNumber: widget.mobilnumber_, 
+         pincode: widget.pincode_, 
+         familyMembers: widget.familymember_, 
+         acres: widget.age_, 
+         role: widget.role_, 
+         loginStatus: true);
+      } catch (e) {
+        // Handle any errors
+        print(e.toString());
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
         print('OTP: $otp'); // Print OTP in string format
       },
       child: Text('Submit'),
@@ -137,6 +187,7 @@ Widget buildOtpFields() {
     return TextButton(
       onPressed: () {
         // Function to resend OTP
+        
       },
       child: Text('Resend OTP'),
     );

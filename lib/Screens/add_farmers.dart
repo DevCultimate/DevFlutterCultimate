@@ -7,7 +7,7 @@ class RegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration'),
+        title: const Text('Registration'),
       ),
       body: SingleChildScrollView(
         child: RegistrationForm(),
@@ -63,7 +63,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 children: [
                   Expanded(
                     child: TextField(
@@ -84,9 +84,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Select Date',
                   border: OutlineInputBorder(),
                   helperText: 'Add the date for response',
@@ -97,9 +97,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 readOnly: true,
                 controller: _dateController,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropdownButtonFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Gender',
                   border: OutlineInputBorder(),
                 ),
@@ -111,8 +111,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 }).toList(),
                 onChanged: (String? value) {},
               ),
-              SizedBox(height: 10),
-              TextField(
+              const SizedBox(height: 10),
+              const TextField(
                 keyboardType: TextInputType.phone,
                 maxLength: 10,
                 decoration: InputDecoration(
@@ -120,31 +120,31 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CSCPicker(
                 defaultCountry: CscCountry.India,
                 showStates: true,
                 showCities: true,
                 flagState: CountryFlag.DISABLE,
                 dropdownDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   border: Border.all(color: Colors.grey.withOpacity(0.5)),
                 ),
                 disabledDropdownDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   color: Colors.grey.withOpacity(0.5),
                   border: Border.all(color: Colors.grey.withOpacity(0.5)),
                 ),
-                selectedItemStyle: TextStyle(
+                selectedItemStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,
                 ),
-                dropdownHeadingStyle: TextStyle(
+                dropdownHeadingStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
-                dropdownItemStyle: TextStyle(
+                dropdownItemStyle: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,
                 ),
@@ -169,7 +169,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             ],
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Center(
           child: SizedBox(
             width: double.infinity,
@@ -177,7 +177,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               onPressed: () {
                 // Implement submit functionality
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
               style: ElevatedButton.styleFrom(
                 elevation: 10,
                 shape: RoundedRectangleBorder(

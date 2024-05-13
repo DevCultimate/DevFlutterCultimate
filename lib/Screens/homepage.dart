@@ -96,9 +96,9 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _buildCardButton("assets/farmer.png", 'Request Farmer', () {
                   // Navigate to another screen
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => FarmerRegistrationPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RequestFarmers()));
                 }),
-                _buildCardButton("assets/add.png", 'Add Farmer', () {
+                _buildCardButton("assets/add.png", 'Enroll Farmer', () {
                   // Navigate to another screen
                   Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
                 }),
@@ -167,42 +167,52 @@ class _HomePageState extends State<HomePage> {
   }
 
  Widget _buildCardButton(String pngPath, String buttonText, VoidCallback onTap) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Card(
-      elevation: 8,
-      shadowColor: Colors.grey.withOpacity(0.5),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Container(
-        width: 150,
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
+  return SizedBox(
+    width: 150, // Set fixed width for uniformity
+    height: 150, // Set fixed height for uniformity
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 8,
+        backgroundColor: Colors.white, // Button background color
+        foregroundColor: Colors.black, // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: BorderSide(color: Color.fromARGB(255, 195, 199, 81), width: 1.0), // Border
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              pngPath,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
+      ),
+      onPressed: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80, // Adjust size as needed
+            height: 80, // Adjust size as needed
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey[200], // Background color for circular avatar
             ),
-            SizedBox(height: 8),
-            Text(
-              buttonText,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+            child: ClipOval(
+              child: Image.asset(
+                pngPath,
+                fit: BoxFit.contain, // Maintain aspect ratio and fit inside
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            buttonText,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ],
       ),
     ),
   );
 }
+
+
 
 }

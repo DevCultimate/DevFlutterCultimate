@@ -1,6 +1,9 @@
+import 'package:cultimate/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cultimate/Authentication/otp_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:toast/toast.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -12,7 +15,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController pincodeController = TextEditingController();
   final TextEditingController familyMembersController = TextEditingController();
@@ -23,6 +26,8 @@ class _SignUpState extends State<SignUp> {
   bool isVisible = false;
   final formKey = GlobalKey<FormState>();
   String? selectedRole;
+  bool _isSigningUp = false;
+  FirestoreService firestoreservice = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,8 @@ class _SignUpState extends State<SignUp> {
                   // Username Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -52,7 +58,8 @@ class _SignUpState extends State<SignUp> {
                         if (value!.isEmpty) {
                           return "Username is required";
                         }
-                        if (!RegExp(r'^[A-Za-z][A-Za-z0-9_]*$').hasMatch(value)) {
+                        if (!RegExp(r'^[A-Za-z][A-Za-z0-9_]*$')
+                            .hasMatch(value)) {
                           return "Username must start with a letter and contain only letters, numbers, or underscores";
                         }
                         return null;
@@ -69,7 +76,8 @@ class _SignUpState extends State<SignUp> {
                   // Password Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -83,7 +91,9 @@ class _SignUpState extends State<SignUp> {
                         if (value.length < 8) {
                           return "Password must be at least 8 characters long";
                         }
-                        if (!RegExp(r'^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+]).{8,}$').hasMatch(value)) {
+                        if (!RegExp(
+                                r'^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+]).{8,}$')
+                            .hasMatch(value)) {
                           return "Password must contain at least one letter, one digit, and one special character";
                         }
                         return null;
@@ -99,7 +109,9 @@ class _SignUpState extends State<SignUp> {
                               isVisible = !isVisible;
                             });
                           },
-                          icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off),
+                          icon: Icon(isVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                         ),
                       ),
                     ),
@@ -109,7 +121,8 @@ class _SignUpState extends State<SignUp> {
                   // Confirm Password Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -138,7 +151,8 @@ class _SignUpState extends State<SignUp> {
                   // Age Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -155,7 +169,9 @@ class _SignUpState extends State<SignUp> {
                         return null;
                       },
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       decoration: const InputDecoration(
                         labelText: 'Age',
                         border: InputBorder.none,
@@ -168,7 +184,8 @@ class _SignUpState extends State<SignUp> {
                   // Mobile Number Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -183,7 +200,9 @@ class _SignUpState extends State<SignUp> {
                         return null;
                       },
                       keyboardType: TextInputType.phone,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       decoration: const InputDecoration(
                         labelText: 'Mobile Number',
                         border: InputBorder.none,
@@ -196,7 +215,8 @@ class _SignUpState extends State<SignUp> {
                   // Pincode Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -211,12 +231,13 @@ class _SignUpState extends State<SignUp> {
                         return null;
                       },
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       decoration: const InputDecoration(
-                        labelText: 'Pincode',
-                        prefixIcon: Icon(Icons.pin_drop),
-                        border: InputBorder.none
-                      ),
+                          labelText: 'Pincode',
+                          prefixIcon: Icon(Icons.pin_drop),
+                          border: InputBorder.none),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -224,7 +245,8 @@ class _SignUpState extends State<SignUp> {
                   // Number of Family Members Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -241,12 +263,13 @@ class _SignUpState extends State<SignUp> {
                         return null;
                       },
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
                       decoration: const InputDecoration(
-                        labelText: 'Number of Family Members',
-                        prefixIcon: Icon(Icons.group),
-                        border: InputBorder.none
-                      ),
+                          labelText: 'Number of Family Members',
+                          prefixIcon: Icon(Icons.group),
+                          border: InputBorder.none),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -254,7 +277,8 @@ class _SignUpState extends State<SignUp> {
                   // Acres Field
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -270,10 +294,9 @@ class _SignUpState extends State<SignUp> {
                       },
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        labelText: 'Acres of Land',
-                        prefixIcon: Icon(Icons.landscape),
-                        border: InputBorder.none
-                      ),
+                          labelText: 'Acres of Land',
+                          prefixIcon: Icon(Icons.landscape),
+                          border: InputBorder.none),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -281,7 +304,8 @@ class _SignUpState extends State<SignUp> {
                   // Role Dropdown
                   Container(
                     margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 147, 217, 196),
@@ -310,7 +334,7 @@ class _SignUpState extends State<SignUp> {
                           child: Text('I am a farmer'),
                         ),
                         DropdownMenuItem(
-                          value: 'lookingForShareFarmers',
+                          value: 'LandOwner',
                           child: Text('I am looking for share farmers'),
                         ),
                       ],
@@ -323,17 +347,15 @@ class _SignUpState extends State<SignUp> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: const Color.fromARGB(255, 50, 39, 26)
-                    ),
+                        color: const Color.fromARGB(255, 50, 39, 26)),
                     child: TextButton(
-                      onPressed: () {
-                        if(formKey.currentState!.validate())
-                        {
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>OtpScreen(verificationid: "50")));}
-                      },
+                      onPressed: _isSigningUp ? null : _signUp,
+
                       child: const Text(
                         'Sign Up',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 255, 255, 255)),
                       ),
                     ),
                   ),
@@ -344,5 +366,101 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void _signUp() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        _isSigningUp = true; // Show progress indicator
+      });
+
+      if(await firestoreservice.isUserExists(mobileNumberController.text)){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Go for login'),
+          ),
+        );
+      }
+      else{
+      try {
+        // Your sign-up logic
+        // For example:
+        bool userExists = await firestoreservice.isUserExists(mobileNumberController.text);
+          await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: '+91${mobileNumberController.text.toString()}',
+            verificationCompleted: (PhoneAuthCredential credential) {
+              // Auto-retrieval or instant validation of SMS code
+              // You can directly sign in the user here
+              ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registration Successful'),
+          ),
+        );
+            },
+            verificationFailed: (FirebaseAuthException e) {
+              // Handle verification failure
+              print(e.message);
+              ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message.toString()),
+          ),
+        );
+            },
+            codeSent: (String verificationId, int? resendToken) {
+              // Navigate to OTP screen when code is sent
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      OtpScreen(verificationId: verificationId,
+                      username_: usernameController.text,
+                      password_: passwordController.text,
+                      age_: ageController.text,
+                      mobilnumber_:mobileNumberController.text,
+                      pincode_:pincodeController.text,
+                      familymember_:familyMembersController.text,
+                      area_:acresController.text,
+                      role_:selectedRole.toString()),
+                ),
+              );
+            },
+            codeAutoRetrievalTimeout: (String verificationId) {
+              // Handle code auto-retrieval timeout
+            },
+          );
+          ////////////////////////////////////
+
+          
+          setState(() {
+            _isSigningUp = false; // Hide progress indicator
+          });
+        
+      } catch (e) {
+        // Handle sign-up errors
+        print(e.toString());
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Something went wrong'),
+          ),
+        );
+
+        setState(() {
+          _isSigningUp = false; // Hide progress indicator
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
+      }
+      ////////place else brac
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Fill All The Fields'),
+          ),
+        );
+    }
   }
 }
